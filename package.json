@@ -1,0 +1,29 @@
+{
+  "name": "nearest_city",
+  "version": "0.0.0",
+  "description": "Offline reverse geocoding that match lat/lng to the nearest city of at least 5,000 people.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimeMagazine/nearest_city.git"
+  },
+  "keywords": [
+    "geocoding",
+    "reverse",
+    "geocoding"
+  ],
+  "author": "Chris Wilson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TimeMagazine/nearest_city/issues"
+  },
+  "homepage": "https://github.com/TimeMagazine/nearest_city#readme",
+  "dependencies": {
+    "fast-csv": "^2.0.0",
+    "geodist": "^0.2.1",
+    "quadtree": "^1.0.2"
+  }
+}
