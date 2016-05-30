@@ -11,11 +11,18 @@ var PRECISION = 6;
 
 //module.exports = {};
 
-module.exports.initialize = function(callback) {
+module.exports.initialize = function(callback, opts) {
+	opts = opts || {};
 	var headers = [ "geonameid", "name", "asciiname", "alternatenames", "latitude", "longitude", "feature class", "feature code", "country code", "cc2", "admin1 code", "admin2 code", "admin3 code", "admin4 code", "population", "elevation", "dem", "timezone", "modification date" ];
 	//var banned = ["PPLA3", "PPLA4", "PPLX", "PPL"];
 
-	var stream = fs.createReadStream(__dirname + "/cities5000.txt");
+	if (opts.level == 1000) {
+		var filename = "/cities1000.txt";
+	} else {
+		var filename = "/cities5000.txt";
+	}
+
+	var stream = fs.createReadStream(__dirname + filename);
 	csv
 		.fromStream(stream, { headers : headers, delimiter: "\t", quote: null })
 		.on("data", function(city) {
@@ -23,10 +30,12 @@ module.exports.initialize = function(callback) {
 			city.longitude = parseFloat(city.longitude);
 			city.population = parseInt(city.population);
 			delete city.alternatenames;
-			cities.push(city);
+			if (!opts.country || opts.country == city["country code"]) {
+				cities.push(city);
+			}
 		})
 		.on("end", function() {
-			console.log("Loaded cities, now building quadtree");
+			console.log("Loaded " + cities.length + " cities, now building quadtree");
 			makeQuadtree();
 		});
 
@@ -66,7 +75,7 @@ module.exports.locate = function(point) {
 	}
 
 	if (!candidates.length) {
-		console.log("Couldn't locate a city near ", point);
+		//console.log("Couldn't locate a city near ", point);
 		return null;
 	}
 
